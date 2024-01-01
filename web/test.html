@@ -1,0 +1,323 @@
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>螺丝快传</title>
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+  <!-- 引入 layui.css -->
+  <link href="layui/css/layui.css" rel="stylesheet">
+  <!-- 引入 layui.js -->
+  <script src="layui/layui.js"></script>
+</head>
+
+<body>
+<a href="http://ox3fffff.cn" target="_blank" class="zshyperlink">0X3fffff</a>
+<a href="#" onclick="register()" class="yshyperlink" style="right: 120px">注册</a>
+<a href="#" onclick="login()" class="yshyperlink" style="right: 30px">登录</a>
+  <div class="container right-panel-active">
+    <!-- 下载 -->
+    <div class="container__form container--signup">
+      <form class="form" id="form1" method="post">
+        <h2 class="form__title">取回文件</h2>
+        <input type="text" placeholder="包裹号" class="input" name="unum" id="unum"/>
+        <input type="text" placeholder="提取码" class="input" name="upwd" id="upwd"/>
+        <button  class="btn" type="button" lay-on="alertt" >下载1</button>
+        <button  onclick="test()" class="btn" type="button" >下载2</button>
+        <button  id="dld" class="btn" type="button">下载</button>
+      </form>,
+    </div>
+
+    <!-- 上传 -->
+    <div class="container__form container--signin">
+      <form action="#" class="form" id="form2">
+        <h2 class="form__title">上传包裹</h2>
+        <input type="text" placeholder="提取码" class="input" />
+        <select id="selectTime" name="selectTime" class="form-control info-select">
+          <option value="10">10分钟</option>
+          <option value="60">1小时</option>
+          <option value="1440">1天</option>
+        </select>
+        <div class="layui-upload">
+          <button type="button" class="layui-btn layui-btn-normal" id="ID-upload-demo-files">选择多文件</button>
+          <div hidden="hidden">
+          <div class="layui-upload-list" id="layui-upload-list">
+            <table class="layui-table">
+              <colgroup>
+                <col style="min-width: 100px;">
+                <col width="150">
+                <col width="260">
+                <col width="150">
+              </colgroup>
+              <thead>
+              <th>文件名</th>
+              <th>大小</th>
+              <th>上传进度</th>
+              <th>操作</th>
+              </thead>
+              <tbody id="ID-upload-demo-files-list"></tbody>
+            </table>
+          </div>
+          </div>
+          <button type="button" class="layui-btn layui-btn-normal" id="ID-view-selected-files">查看已选择文件</button>
+          <button type="button" class="layui-btn" id="ID-upload-demo-files-action">开始上传</button>
+        </div>
+        <a href="#" class="link">别点了，还没写...</a>
+        <button class="btn">上传</button>
+      </form>
+    </div>
+
+    <!-- Overlay -->
+    <div class="container__overlay">
+      <div class="overlay">
+        <div class="overlay__panel overlay--left">
+          <button class="btn" id="signIn">上传文件</button>
+        </div>
+        <div class="overlay__panel overlay--right">
+          <button class="btn" id="signUp">取回文件</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function register(){
+      layer.open({
+        type: 1,
+        area: ['500px', '410px'],
+        title: '注册账号',
+        shade: 0.6,
+        shadeClose: true,
+        maxmin: true,
+        anim: 0,
+        success: function (layero, index) {
+          // 使用AJAX加载另一个页面的内容
+          $.ajax({
+            url: 'logReg\\register.html',
+            dataType: 'html',
+            success: function (data) {
+              // 将加载的另一个页面的内容插入到弹层中
+              layero.find('.layui-layer-content').html(data);
+            },
+            error: function () {
+              layer.msg('加载注册页面失败');
+            }
+          });
+        }
+      });
+    }
+    function login(){
+      layer.open({
+        type: 1,
+        area: ['500px', '365px'],
+        title: '登录账号',
+        shade: 0.6,
+        shadeClose: true,
+        maxmin: true,
+        anim: 0,
+        success: function (layero, index) {
+          // 使用AJAX加载另一个页面的内容
+          $.ajax({
+            url: 'logReg\\login.html',
+            dataType: 'html',
+            success: function (data) {
+              // 将加载的另一个页面的内容插入到弹层中
+              layero.find('.layui-layer-content').html(data);
+            },
+            error: function () {
+              layer.msg('加载登录页面失败');
+            }
+          });
+        }
+      });
+    }
+    const signInBtn = document.getElementById("signIn");
+    const signUpBtn = document.getElementById("signUp");
+    const fistForm = document.getElementById("form1");
+    const secondForm = document.getElementById("form2");
+    const container = document.querySelector(".container");
+
+    signInBtn.addEventListener("click", () => {
+      container.classList.remove("right-panel-active");
+    });
+
+    signUpBtn.addEventListener("click", () => {
+      container.classList.add("right-panel-active");
+    });
+
+    //fistForm.addEventListener("submit", (e) => e.preventDefault());
+    //secondForm.addEventListener("submit", (e) => e.preventDefault());
+
+  </script>
+
+<a href="https://beian.miit.gov.cn/" target="_blank" class="balink">豫ICP备2023037446号-1</a>
+
+</body>
+
+</html>
+
+<script type="text/javascript">
+  layui.use(function(){
+    var upload = layui.upload;
+    var element = layui.element;
+    var $ = layui.$;
+    var uploadListIns;
+
+    // 制作多文件上传表格
+    uploadListIns = upload.render({
+      elem: '#ID-upload-demo-files',
+      elemList: $('#ID-upload-demo-files-list'), // 列表元素对象
+      url: '', // 实际使用时改成您自己的上传接口即可。
+      accept: 'file',
+      multiple: true,
+      number: 3,
+      auto: false,
+      bindAction: '#ID-upload-demo-files-action',
+      choose: function(obj){
+        var that = this;
+        var files = this.files = obj.pushFile(); // 将每次选择的文件追加到文件队列
+
+        // 读取本地文件
+        obj.preview(function(index, file, result){
+          var tr = $(['<tr id="upload-'+ index +'">',
+            '<td>'+ file.name +'</td>',
+            '<td>'+ (file.size/1024).toFixed(1) +'kb</td>',
+            '<td><div class="layui-progress" lay-filter="progress-demo-'+ index +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>',
+            '<td>',
+            '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>',
+            '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>',
+            '</td>',
+            '</tr>'].join(''));
+
+          // 单个重传
+          tr.find('.demo-reload').on('click', function(){
+            obj.upload(index, file);
+          });
+
+          that.elemList.append(tr);
+          element.render('progress'); // 渲染新加的进度条组件
+        });
+      },
+      done: function(res, index, upload){ // 成功的回调
+        var that = this;
+        var tr = that.elemList.find('tr#upload-'+ index)
+        var tds = tr.children();
+        tds.eq(3).html(''); // 清空操作
+        delete this.files[index]; // 删除文件队列已经上传成功的文件
+        return;
+      },
+      allDone: function(obj){ // 多文件上传完毕后的状态回调
+        console.log(obj)
+      },
+      error: function(index, upload){ // 错误回调
+        var that = this;
+        var tr = that.elemList.find('tr#upload-'+ index);
+        var tds = tr.children();
+        // 显示重传
+        tds.eq(3).find('.demo-reload').removeClass('layui-hide');
+      },
+      progress: function(n, elem, e, index){ // 注意：index 参数为 layui 2.6.6 新增
+        element.progress('progress-demo-'+ index, n + '%'); // 执行进度条。n 即为返回的进度百分比
+      }
+    });
+
+    // 在choose回调之外绑定删除事件
+    $('#ID-upload-demo-files-list').on('click', '.demo-delete', function(){
+      var tr = $(this).closest('tr');
+      var index = tr.attr('id').replace('upload-', '');
+      delete uploadListIns.files[index]; // 删除相应的文件
+      tr.remove(); // 删除表格行
+      // 清空 input file 值，以免删除后出现同名文件不可选
+      uploadListIns.config.elem.next()[0].value = '';
+    });
+
+    $('#ID-view-selected-files').on('click', function(){
+      // 弹出层显示已选择文件的表格内容
+      layer.open({
+        type: 1,
+        area: ['500px', '300px'],
+        title: '已选择文件',
+        shade: 0.6,
+        shadeClose: true,
+        maxmin: true,
+        anim: 0,
+        content: $('#layui-upload-list').html() // 使用已选择文件的表格内容作为弹出层内容
+      });
+    });
+  });
+
+
+  var alertt2;
+    layui.use(function(){
+      var layer = layui.layer;
+      var util = layui.util;
+      // 批量事件
+      util.on('lay-on', {
+        alertt: function () {
+          layer.alert('对话框内容');
+        }
+      });
+    });
+  function test() {
+
+    //layer.alert("包裹号或提取码错误！");
+    layer.open({
+      type: 0,
+      title: 'Hello layer',
+      shadeClose: true, // 点击遮罩区域，关闭弹层
+      anim: 4, // 0-6 的动画形式，-1 不开启
+      skin:'layui-layer-lan',
+      content: 'hello'
+    });
+
+    //layer.msg('请求失败', {icon: 2});
+  }
+  //$():jQuery的工厂函数
+  $(function(){
+    $("#dld").click(function(e){
+      //获取2个input框的值
+      var unum=$("#unum").val();
+      var upwd=$("#upwd").val();
+      //当前页面调用ajax异步请求
+      $.ajax({
+                //url:"/LoginServlet?aa="+uname+"&bb="+upwd,
+                url:"/indexServlet",
+                data:{unum:unum,upwd:upwd},
+                type:"post",
+                async:true,
+                dateType:"json",
+                success:function(data){
+
+                  if (data.unum == null) {
+                    alert("包裹号或提取码错误！");
+                    return;
+                  }
+                  alert("请求成功,等待下载");
+                  downloadFile(data);
+                },error:function(data){
+                  alert("请求失败");
+                }
+      });
+      function downloadFile(data) {
+        console.log("进入downloadFile");
+        // 创建一个隐藏的<a>元素
+        var downloadLink = document.createElement("a");
+        downloadLink.style.display="none";
+        // 设置下载链接的属性
+        downloadLink.href = "/DownloadFile?unum=" + data.unum + "&fileName=" + encodeURIComponent(data.fileName);
+        downloadLink.download = data.fileName;
+        // 将<a>元素追加到body中
+        document.body.appendChild(downloadLink);
+        // 触发点击操作
+        downloadLink.click();
+        console.log("按钮被点击了！");
+        // 移除<a>元素
+        setTimeout(function () {
+          document.body.removeChild(downloadLink);
+        }, 100);
+      }
+    })
+  })
+
+</script>

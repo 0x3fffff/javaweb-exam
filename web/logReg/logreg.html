@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- https://codepen.io/danielkvist/pen/LYNVyPL -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学生信息管理系统</title>
+  <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/index.css">
+  <link href="../layui/css/layui.css" rel="stylesheet">
+  <script src="../layui/layui.js"></script>
+</head>
+
+<body>
+  <div class="container right-panel-active">
+    <!-- Sign Up -->
+    <div class="container__form container--signup">
+      <form action="#" class="form" id="form1">
+        <h2 class="form__title">注册</h2>
+        <input type="text" placeholder="用户名" id="ruser" class="input" />
+        <span id="namecheck"></span>
+<!--        <input type="email" placeholder="Email" class="input" />-->
+        <input type="password" placeholder="密码" id="rpassword" class="input" />
+        <select id="selectTime2" name="selectTime" class="form-control info-select">
+          <option value="10">学生</option>
+          <option value="60">老师</option>
+        </select>
+        <button type="button" class="btn" onclick="register()">注册</button>
+      </form>
+    </div>
+
+    <!-- Sign In -->
+    <div class="container__form container--signin">
+      <form action="#" class="form" id="form2">
+        <h2 class="form__title">登录</h2>
+        <input type="text" placeholder="用户名" id="uname" class="input" />
+        <input type="password" placeholder="密码" id="upwd" class="input" />
+
+        <select id="selectTime" name="selectTime" class="form-control info-select">
+          <option value="10">管理员</option>
+          <option value="60">学生</option>
+          <option value="1440">老师</option>
+        </select>
+        <div style="white-space:nowrap;position:Relative;left: -5%">
+        <input type="text" placeholder="验证码" id="captcha" class="input" style="width: 62%;display:inline;"/>
+        <img src="/captcha" id="captchaImg" alt="Captcha" onclick="reCaptcha()" style="display:inline;">
+        </div>
+        <button type="button" class="btn" onclick="login()">登录</button>
+      </form>
+    </div>
+
+    <!-- Overlay -->
+    <div class="container__overlay">
+      <div class="overlay">
+        <div class="overlay__panel overlay--left">
+          <button class="btn" id="signIn">登录</button>
+        </div>
+        <div class="overlay__panel overlay--right">
+          <button class="btn" id="signUp">注册</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const signInBtn = document.getElementById("signIn");
+    const signUpBtn = document.getElementById("signUp");
+    const firstForm = document.getElementById("form1");
+    const secondForm = document.getElementById("form2");
+    const container = document.querySelector(".container");
+    var layer = layui.layer;
+    firstForm.style = "opacity:1;";
+    secondForm.style = "opacity:0;";
+    signInBtn.addEventListener("click", () => {
+      secondForm.style = "opacity:0.5;";
+      secondForm.style = "opacity:0.5;";
+      container.classList.remove("right-panel-active");
+     // firstForm.display = "block";
+      //firstForm.style.display = "none";
+      firstForm.style = "opacity:0;";
+      secondForm.style = "opacity:1;";
+      // firstForm.style ="display:none;";
+      // secondForm.style ="display:block;";
+      //secondForm.style.display = "block";
+    });
+
+    signUpBtn.addEventListener("click", () => {
+      firstForm.style = "opacity:0.5;";
+      firstForm.style = "opacity:0.5;";
+      container.classList.add("right-panel-active");
+      // secondForm.style ="display:none;";
+      // firstForm.style ="display:block;";
+      secondForm.style = "opacity:0;";
+      firstForm.style = "opacity:1;";
+      console.log(2)
+      // secondForm.style.display = "none";
+      // firstForm.style.display = "block";
+    });
+    function reCaptcha(){
+        const img = document.getElementById('captchaImg');
+        img.src = '/captcha?'+Math.random();
+    }
+    // fistForm.addEventListener("submit", (e) => e.preventDefault());
+    // secondForm.addEventListener("submit", (e) => e.preventDefault());
+    var flag
+    $("#ruser").blur(function(){
+      var uname = $("#ruser").val();
+      $.ajax({
+        url:"/register?action=getUserByUname",
+        type:"post",
+        data:{uname:uname},
+        success:function(msg){//请求成功的回调函数
+          if(msg == "err"){
+            flag = false;
+            $("#namecheck").html("此账号已被注册!!!!");
+            $("#namecheck").css("color","#8B4513");
+            // $("span").attr("style","color:red");
+          }else if(msg == "ok"){
+            flag = true;
+            $("#namecheck").html("您可以注册√");
+            $("#namecheck").attr("style","color:#FFFFFF");
+          }
+        },error:function(){//请求失败的回调函数
+          console.log("ajax请求失败!!!")
+        }
+      });
+    });
+    function register(){
+        var uname = $("#ruser").val();
+        var upwd = $("#rpassword").val();
+      if(flag){
+      $.post("/register?action=reg", {uname:uname,upwd:upwd}, function(data,textStatus) {
+        if(data.code=="200"){
+          layer.msg('注册成功');
+          //window.open("../homepage/fileTable.html","_self");
+          //console.log(textStatus);
+        }else{
+          layer.msg('注册失败');
+          //console.log(textStatus);
+        }
+      }, "json");
+    }else{
+      layer.alert("用户名已存在");
+    }
+    }
+    function login(){
+      var upwd = $("#upwd").val();
+      var uname = $("#uname").val();
+      var captcha = $("#captcha").val();
+      $.post("/login", {uname:uname,upwd:upwd,captcha:captcha}, function(data,textStatus) {
+        console.log(data);
+        if(data.code=="300"){
+          layer.msg('登录成功');
+          window.open("../examHomepage/allTempIndex.jsp","_self");
+          //window.open("../homepage/fileTable.html","_self");
+          //console.log(textStatus);
+        }else if (data.code=="301"){
+          //slider.reset();
+          layer.msg('账号或密码错误');
+        }else if (data.code=="302") {
+          layer.msg('验证码错误');
+        }else{
+          layer.msg('登录失败');
+        }
+      }, "json");
+    }
+  </script>
+</body>
+
+</html>
