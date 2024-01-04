@@ -70,7 +70,7 @@
                     "e":field.e,
                 },
                 success: function (data) {
-                    layer.msg("编辑成功！");
+                    layer.msg("编辑成功！请刷新表单");
                 },
                 error: function () {
                     layer.msg('编辑失败');

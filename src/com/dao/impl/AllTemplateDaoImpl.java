@@ -114,7 +114,7 @@ public class AllTemplateDaoImpl extends BaseDao implements AllTemplateDao {
         getConnection();
         List<AllTemplate> allTemplates = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM "+ExamTemp.tableName+" WHERE "+ExamTemp.id+" LIKE '%"+id+"%';";
+            String sql = "SELECT * FROM "+ExamTemp.tableName+" WHERE "+ExamTemp.id+" = "+id+";";
             ResultSet rs = selectSql(sql,new Object[]{});
             while (rs.next()){
                 AllTemplate allTemplate = new AllTemplate();

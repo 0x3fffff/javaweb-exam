@@ -100,9 +100,18 @@
         const img = document.getElementById('captchaImg');
         img.src = '/captcha?'+Math.random();
     }
+    layer.open({
+      type: 0,
+      title: "提醒",
+      shadeClose: true, // 点击遮罩区域，关闭弹层
+      anim: 4, // 0-6 的动画形式，-1 不开启
+      skin:'layui-layer-lan',
+      content: "本系统用到的数据库id字段均会自动设置成自增长！",
+      btn: ['好的']
+    });
     // fistForm.addEventListener("submit", (e) => e.preventDefault());
     // secondForm.addEventListener("submit", (e) => e.preventDefault());
-    var flag
+    var flag = false;
     $("#ruser").blur(function(){
       var uname = $("#ruser").val();
       $.ajax({
@@ -113,12 +122,12 @@
           if(msg == "err"){
             flag = false;
             $("#namecheck").html("此账号已被注册!!!!");
-            $("#namecheck").css("color","#8B4513");
+            $("#namecheck").css("color","#e51111");
             // $("span").attr("style","color:red");
           }else if(msg == "ok"){
             flag = true;
             $("#namecheck").html("您可以注册√");
-            $("#namecheck").attr("style","color:#FFFFFF");
+            $("#namecheck").css("color","#00ff2a");
           }
         },error:function(){//请求失败的回调函数
           console.log("ajax请求失败!!!")
@@ -157,10 +166,13 @@
         }else if (data.code=="301"){
           //slider.reset();
           layer.msg('账号或密码错误');
+          reCaptcha();
         }else if (data.code=="302") {
           layer.msg('验证码错误');
+          reCaptcha();
         }else{
           layer.msg('登录失败');
+          reCaptcha();
         }
       }, "json");
     }

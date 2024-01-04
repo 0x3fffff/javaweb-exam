@@ -2,7 +2,6 @@ package com.dao.impl;
 
 import com.dao.BaseDao;
 import com.dao.UserDao;
-import com.entity.UData;
 import com.entity.User;
 
 import java.sql.ResultSet;

@@ -1,7 +1,6 @@
 package com.dao;
 
 import com.entity.AllTemplate;
-import com.entity.Food;
 
 import java.util.List;
 

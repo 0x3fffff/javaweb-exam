@@ -40,22 +40,6 @@
             </select>
         </div>
         <button class="layui-btn layui-btn-sm" lay-event="switchSys" id="switchSys" style="position: absolute;left: 57%">切换</button>
-<%--        <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="progress-bar-filter">--%>
-<%--            <div class="layui-progress-bar" lay-percent="0%"></div>--%>
-<%--        </div>--%>
-<%--        <p id="size"></p>--%>
-        <!--        <button class="layui-btn layui-btn-sm" id="dropdownButton">-->
-        <!--            下拉按钮-->
-        <!--            <i class="layui-icon layui-icon-down layui-font-12"></i>-->
-        <!--        </button>-->
-        <!--        <button class="layui-btn layui-btn-sm layui-bg-blue" id="reloadTest">-->
-        <!--            重载测试-->
-        <!--            <i class="layui-icon layui-icon-down layui-font-12"></i>-->
-        <!--        </button>-->
-        <!--        <button class="layui-btn layui-btn-sm layui-btn-primary" id="rowMode">-->
-        <!--            <span>{{= d.lineStyle ? '多行' : '单行' }}模式</span>-->
-        <!--            <i class="layui-icon layui-icon-down layui-font-12"></i>-->
-        <!--        </button>-->
     </div>
 </script>
 <script type="text/html" id="barDemo">
@@ -75,7 +59,7 @@
         shadeClose: true, // 点击遮罩区域，关闭弹层
         anim: 4, // 0-6 的动画形式，-1 不开启
         skin:'layui-layer-molv',
-        content: "欢迎使用<%=ExamTemp.indexTitle%>！",
+        content: "欢迎[<%=request.getSession().getAttribute("uname")%>]登录<%=ExamTemp.indexTitle%>！",
         btn: ['好的']
     });
     function EnterKey(event){
@@ -588,8 +572,6 @@
                     return obj.reedit(); // 重新编辑 -- v2.8.0 新增
                 }
             }
-            // 编辑后续操作，如提交更新请求，以完成真实的数据更新
-            // …
             layer.msg('编辑成功', {icon: 1});
 
             // 其他更新操作

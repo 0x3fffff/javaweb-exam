@@ -1,8 +1,7 @@
 package com.servlet.userfile;
 
 import com.entity.AllTemplate;
-import com.entity.FData;
-import com.entity.Food;
+
 import com.service.AllTemplateService;
 import com.service.impl.AllTemplateServiceImpl;
 import com.utils.JsonMassage;

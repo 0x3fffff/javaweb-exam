@@ -53,6 +53,9 @@
                 success: function (data) {
                     if (data=='ok'){
                         layer.msg("修改成功！");
+                        setTimeout(function () {
+                            window.location.href="/Logout";
+                        },1000);
                     }else{
                         layer.msg("修改失败！");
                     }

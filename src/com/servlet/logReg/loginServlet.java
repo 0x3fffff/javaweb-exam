@@ -1,5 +1,6 @@
 package com.servlet.logReg;
 
+import com.dao.TableConfig;
 import com.entity.User;
 import com.service.UserService;
 import com.service.impl.UserServiceImpl;
@@ -19,9 +20,12 @@ import java.io.PrintWriter;
 @WebServlet("/login")
 public class loginServlet extends HttpServlet {
     UserService userService = new UserServiceImpl();
+
+    TableConfig tableConfig = new TableConfig();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ExamTemp.switchSys("course");
+        ExamTemp.switchSys("course"); //默认系统
+        tableConfig.init(ExamTemp.tableName,ExamTemp.id);
         String uname = req.getParameter("uname");
         String upwd = req.getParameter("upwd");
         String captcha = (String) req.getSession().getAttribute("captcha");
@@ -31,6 +35,7 @@ public class loginServlet extends HttpServlet {
         //System.out.println(user);
         //System.out.println("aaa");
         String json = "";
+
         if (captcha == null || !captcha.equalsIgnoreCase(tcaptcha)){
             JsonMassage<User> JSM = new JsonMassage("302", "验证码错误", user);
             json = JSM.toJSONString();

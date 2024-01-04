@@ -1,6 +1,7 @@
 package com.servlet.logReg;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dao.TableConfig;
 import com.entity.User;
 import com.service.UserService;
 import com.service.impl.UserServiceImpl;
@@ -17,7 +18,10 @@ import java.io.PrintWriter;
 @WebServlet("/register")
 public class registerServlet extends HttpServlet {
     UserService userService = new UserServiceImpl();
-
+    static {
+        TableConfig tableConfig = new TableConfig();
+        tableConfig.init("USER","ID");
+    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
