@@ -1,5 +1,5 @@
 # [Javaweb/LayUI/上机考试作业/开源]学生/图书/课程/仓库等管理系统六合一基础功能通用模板
-[部分说明](http://t.csdnimg.cn/xReeC)
+[部分说明](https://blog.csdn.net/qq_19655605/article/details/135395678?spm=1001.2014.3001.5501)
 
 ![登录](https://github.com/0x3fffff/javaweb-exam/blob/main/web/res/2.jpeg?raw=true)
 ![注册](https://github.com/0x3fffff/javaweb-exam/blob/main/web/res/1.jpeg?raw=true)
